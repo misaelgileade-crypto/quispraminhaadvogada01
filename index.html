@@ -218,6 +218,7 @@ light.classList.add('light-strong');
 
 // música com fade-in e ponto melhor
 music.currentTime = 8;
+music.loop = false; // garante que toca até o final sem reiniciar
 music.volume = 0;
 music.play().catch(()=>{});
 
@@ -258,7 +259,7 @@ yesBtn.onclick = ()=>{
 function finalMensagem(){
 const text = `Você me disse que eu te faço sorrir...\n\nE eu decidi que esse vai ser o meu trabalho favorito para o resto da vida. 💖`;
 
-document.body.innerHTML = `
+app.innerHTML = `
 <div class="final-zoom" style="display:flex;justify-content:center;align-items:center;height:100vh;text-align:center;padding:30px;">
 <h1 id="typing"></h1>
 </div>
@@ -304,3 +305,4 @@ navigator.serviceWorker.register('sw.js');
 
 </body>
 </html>
+
