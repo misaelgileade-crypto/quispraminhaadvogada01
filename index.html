@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ruth Vitoria ❤️</title>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="apple-touch-icon" href="icon.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+:root{ --red:#ff3c3c; --orange:#ff8c00; }
+body{font-family:'Playfair Display',serif;text-align:center;background:#000;color:#fff;margin:0;overflow:hidden;}
+button{padding:15px 25px;border:none;border-radius:12px;cursor:pointer;}
+#yes{background:linear-gradient(45deg,var(--red),var(--orange));color:#fff;}
+#no{background:#333;color:#bbb;}
+</style>
+</head>
+
+<body>
+<div id="app"></div>
+<audio id="music" src="musica.mp3"></audio>
+
+<script>
+const app=document.getElementById("app");
+const music=document.getElementById("music");
+
+const perguntas=[
+"Você acredita que justiça também pode ser sentir algo por alguém? ⚖️",
+"Você acha que o direito penal é mais difícil que o civil? 📚",
+"Se fosse um contrato, você aceitaria cláusula de carinho infinito? 📜",
+"Você costuma estudar mais à noite? 🌙",
+"Você concorda que amor não precisa de provas, só de sentimento? ❤️",
+"Você costuma revisar antes da prova? 🧠",
+"Posso recorrer ao seu coração sem risco de indeferimento? 😏",
+"Você já decidiu qual área do direito quer seguir? ⚖️"
+];
+
+let etapa=0;
+
+function render(){
+app.innerHTML=`<h1>${perguntas[etapa]}</h1><button id="sim">Sim</button><button id="nao">Não</button>`;
+document.getElementById("sim").onclick=next;
+document.getElementById("nao").onclick=next;
+}
+
+function next(){
+etapa++;
+if(etapa<perguntas.length)render();
+else pedido();
+}
+
+function pedido(){
+app.innerHTML=`<h1>Quer namorar comigo, Ruth Vitoria? 💘</h1><button id="yes">Sim 💖</button><button id="no">Não 😢</button>`;
+document.getElementById("yes").onclick=final;
+}
+
+function final(){
+document.body.innerHTML=`<h1 id="t"></h1>`;
+const txt=`Você me disse que eu te faço sorrir...\n\nE eu decidi que esse vai ser o meu trabalho favorito para o resto da vida. 💖`;
+let i=0;
+function type(){
+if(i<txt.length){
+if(txt[i]=='\n')document.getElementById("t").innerHTML+='<br>';
+else document.getElementById("t").innerHTML+=txt[i];
+i++;setTimeout(type,40);
+}}
+type();
+}
+
+render();
+
+if('serviceWorker'in navigator){navigator.serviceWorker.register('sw.js');}
+</script>
+</body>
+</html>
