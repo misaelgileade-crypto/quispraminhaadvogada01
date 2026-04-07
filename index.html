@@ -1,81 +1,305 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ruthy Vitoria ❤️</title>
 
+<!-- PWA -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <link rel="apple-touch-icon" href="icon.png">
 
+<!-- Fontes -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
 
 <style>
 :root{ --red:#ff3c3c; --orange:#ff8c00; }
-body{font-family:'Playfair Display',serif;text-align:center;background:#000;color:#fff;margin:0;overflow:hidden;}
-button{padding:15px 25px;border:none;border-radius:12px;cursor:pointer;}
-#yes{background:linear-gradient(45deg,var(--red),var(--orange));color:#fff;}
-#no{background:#333;color:#bbb;}
+
+*{ box-sizing:border-box; }
+
+body {
+  font-family: 'Playfair Display', serif;
+  text-align: center;
+  background: radial-gradient(1200px 800px at 50% 10%, #1a1a1a 0%, #0f0f0f 40%, #000 100%);
+  color: #ffffff;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+}
+
+.container {
+  width: 100%;
+  max-width: 520px;
+  padding: 22px;
+  animation: fadeIn .5s ease;
+}
+
+/* luz */
+.light-effect{
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.15), transparent);
+  transform: skewX(-20deg);
+  animation: lightMove 7s infinite;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.light-strong{
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.35), transparent);
+  animation: lightMove 3.5s infinite;
+}
+
+@keyframes lightMove{
+  0%{ left:-120%; }
+  100%{ left:150%; }
+}
+
+/* cinema bars */
+body::before, body::after{
+  content:"";
+  position:fixed;
+  left:0; right:0;
+  height:40px;
+  background:#000;
+  z-index:999;
+}
+body::before{top:0}
+body::after{bottom:0}
+
+h1, h2{ letter-spacing:1px; text-shadow:0 0 15px rgba(255,255,255,.2); }
+
+h2{
+  font-family: 'Great Vibes', cursive;
+  font-size: 2.2em;
+  text-shadow: 0 0 20px rgba(255,255,255,.7);
+}
+
+button {
+  width: 100%;
+  max-width: 260px;
+  font-size: 1.1em;
+  padding: 14px 20px;
+  margin: 10px auto;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: .25s;
+}
+button:hover{ transform: scale(1.05) translateY(-2px); }
+
+#yes { 
+  background: linear-gradient(45deg,var(--red),var(--orange)); 
+  color:white; 
+  box-shadow:0 0 20px rgba(255,120,0,.6);
+}
+#yes.pulse{ animation:pulse 1.2s infinite; }
+@keyframes pulse{
+0%{box-shadow:0 0 10px rgba(255,120,0,.6)}
+50%{box-shadow:0 0 35px rgba(255,120,0,1)}
+100%{box-shadow:0 0 10px rgba(255,120,0,.6)}
+}
+
+#no { background: #333; color:#bbb; }
+
+.progress{width:90%;height:6px;background:#222;margin:20px auto;border-radius:10px;overflow:hidden}
+.progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--red),var(--orange));transition:.3s}
+
+.loader{margin:20px auto;width:60px;height:60px;border:6px solid #333;border-top:6px solid var(--orange);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.percent{color:var(--orange);margin-top:10px}
+
+.cursor{display:inline-block;width:2px;background:white;margin-left:5px;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:0}}
+
+.heart{
+  position:fixed;
+  color:#ff3c3c;
+  font-size:20px;
+  animation:float 5s linear infinite;
+  pointer-events:none;
+  text-shadow:0 0 10px rgba(255,60,60,.8),0 0 20px rgba(255,140,0,.5);
+}
+@keyframes float{
+from{transform:translateY(0) scale(1);opacity:1}
+to{transform:translateY(-800px) scale(1.5);opacity:0}
+}
+
+.fade-out{animation:fadeOut .3s forwards}
+@keyframes fadeOut{to{opacity:0;transform:scale(.98)}}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+.final-zoom{animation:zoom 2s infinite}
+@keyframes zoom{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
+
 </style>
 </head>
 
 <body>
-<div id="app"></div>
+
+<div id="light" class="light-effect"></div>
+<div class="container" id="app"></div>
 <audio id="music" src="musica.mp3"></audio>
 
 <script>
-const app=document.getElementById("app");
-const music=document.getElementById("music");
+const app = document.getElementById("app");
+const music = document.getElementById("music");
+const light = document.getElementById("light");
 
-const perguntas=[
+const perguntas = [
 "Você acredita que justiça também pode ser sentir algo por alguém? ⚖️",
 "Você acha que o direito penal é mais difícil que o civil? 📚",
 "Se fosse um contrato, você aceitaria cláusula de carinho infinito? 📜",
-"Você costuma estudar mais à noite? 🌙",
-"Você concorda que amor não precisa de provas, só de sentimento? ❤️",
-"Você costuma revisar antes da prova? 🧠",
-"Posso recorrer ao seu coração sem risco de indeferimento? 😏",
+@@ -168,141 +41,41 @@
 "Você já decidiu qual área do direito quer seguir? ⚖️"
 ];
 
-let etapa=0;
+let etapa = 0;
 
-function render(){
-app.innerHTML=`<h1>${perguntas[etapa]}</h1><button id="sim">Sim</button><button id="nao">Não</button>`;
-document.getElementById("sim").onclick=next;
-document.getElementById("nao").onclick=next;
+function renderPergunta(){
+const progresso = Math.round((etapa/perguntas.length)*100);
+app.innerHTML = `
+<div class="progress"><div class="progress-bar" style="width:${progresso}%"></div></div>
+<h1>${perguntas[etapa]}</h1>
+<button id="sim">Sim</button>
+<button id="nao">Não</button>
+`;
+
+document.getElementById("sim").onclick = proxima;
+document.getElementById("nao").onclick = proxima;
+
+
 }
 
-function next(){
+function proxima(){
+app.classList.add('fade-out');
+setTimeout(()=>{
+app.classList.remove('fade-out');
 etapa++;
-if(etapa<perguntas.length)render();
-else pedido();
+if(etapa < perguntas.length) renderPergunta();
+else telaCarregamento();
+},150);
 }
 
-function pedido(){
-app.innerHTML=`<h1>Quer namorar comigo, Ruthy Vitoria? 💘</h1><button id="yes">Sim 💖</button><button id="no">Não 😢</button>`;
-document.getElementById("yes").onclick=final;
+function telaCarregamento(){
+let porcentagem = 0;
+app.innerHTML = `
+<h1>Calculando compatibilidade... ⚖️</h1>
+<div class="loader"></div>
+<div class="percent" id="percent">0%</div>
+`;
+
+const interval = setInterval(()=>{
+porcentagem += Math.floor(Math.random()*10)+5;
+if(porcentagem >= 100){
+porcentagem = 100;
+clearInterval(interval);
+setTimeout(()=>pedidoFinal(),500);
+}
+document.getElementById("percent").innerText = porcentagem + "%";
+},200);
 }
 
-function final(){
-document.body.innerHTML=`<h1 id="t"></h1>`;
-const txt=`Você me disse que eu te faço sorrir...\n\nE eu decidi que esse vai ser o meu trabalho favorito para o resto da vida. 💖`;
-let i=0;
+function pedidoFinal(){
+// luz mais forte no momento importante
+light.classList.add('light-strong');
+
+// música com fade-in e ponto melhor
+music.currentTime = 8;
+music.loop = false; // garante que toca até o final sem reiniciar
+music.volume = 0;
+music.play().catch(()=>{});
+
+let vol = 0;
+const fade = setInterval(()=>{
+  vol += 0.05;
+  if(vol >= 1){ vol = 1; clearInterval(fade); }
+  music.volume = vol;
+},200);
+
+app.innerHTML = `
+<h1>Resultado: 100% compatível 💖</h1>
+<h2>Quer namorar comigo, Ruthy Vitoria? 💘</h2>
+<button id="yes" class="pulse">Sim 💖</button>
+<button id="no">Não 😢</button>
+`;
+
+let noScale = 1;
+let yesScale = 1;
+
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+
+noBtn.onclick = ()=>{
+noScale -= 0.2;
+yesScale += 0.2;
+if(noScale <= 0) noBtn.style.display = "none";
+else noBtn.style.transform = `scale(${noScale})`;
+yesBtn.style.transform = `scale(${yesScale})`;
+};
+
+yesBtn.onclick = ()=>{
+  if(navigator.vibrate) navigator.vibrate(200);
+  finalMensagem();
+};
+}
+
+function finalMensagem(){
+const text = `Você me disse que eu te faço sorrir...\n\nE eu decidi que esse vai ser o meu trabalho favorito para o resto da vida. 💖`;
+
+app.innerHTML = `
+<div class="final-zoom" style="display:flex;justify-content:center;align-items:center;height:100vh;text-align:center;padding:30px;">
+<h1 id="typing"></h1>
+</div>
+`;
+
+const el = document.getElementById("typing");
+let i = 0;
+
 function type(){
-if(i<txt.length){
-if(txt[i]=='\n')document.getElementById("t").innerHTML+='<br>';
-else document.getElementById("t").innerHTML+=txt[i];
-i++;setTimeout(type,40);
-}}
-type();
+if(i < text.length){
+if(text[i] === '\n') el.innerHTML += '<br>';
+else el.innerHTML += text[i];
+i++;
+setTimeout(type,40);
+} else {
+el.innerHTML += '<span class="cursor"></span>';
+startHearts();
+}
 }
 
-render();
+setTimeout(type,800);
+}
 
-if('serviceWorker'in navigator){navigator.serviceWorker.register('sw.js');}
+function startHearts(){
+setInterval(()=>{
+const heart = document.createElement("div");
+heart.className = "heart";
+heart.innerText = "❤";
+heart.style.left = Math.random()*window.innerWidth + "px";
+heart.style.bottom = "0px";
+document.body.appendChild(heart);
+setTimeout(()=>heart.remove(),5000);
+},250);
+}
+
+renderPergunta();
+
+if ('serviceWorker' in navigator) {
+navigator.serviceWorker.register('sw.js');
+}
+
+
 </script>
+
 </body>
 </html>
